@@ -3,14 +3,12 @@ FROM python:3.8-slim-buster
 ARG LOCAL_PATH
 
 
-WORKDIR ${LOCAL_PATH}
+WORKDIR /app
 
-COPY requirements.txt .
+COPY ${LOCAL_PATH} /app
 
 RUN  pip install --upgrade pip && \
         pip install -r requirements.txt
-
-COPY . .
 
 EXPOSE 8080
 
