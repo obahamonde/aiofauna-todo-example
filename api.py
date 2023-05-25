@@ -1,23 +1,25 @@
-from aiofauna import Api
+from aiofauna import Api, markdown_it
+
 from models import Todo
 
 app = Api()
 
 
-app.router.add_static("/static", "./static")
+@app.get("/")
+async def index():
+    """Markdown Index Page"""
+    return markdown_it("index.md")
 
 
 @app.get("/api/todos")
 async def get_todos():
     """Get all todos"""
-    response = await Todo.all()
-    return [r.dict() for r in response]
+    return await Todo.all()
 
 @app.post("/api/todos")
 async def create_todo(todo: Todo):
     """Create a new todo"""
-    print(todo)
-    return await todo.create()
+    return await todo.save()
 
 
 @app.put("/api/todos")
@@ -34,4 +36,5 @@ async def delete_todo(ref: str):
 
 @app.on_event("startup")
 async def startup(_):
+    """Startup event hook"""
     await Todo.provision()

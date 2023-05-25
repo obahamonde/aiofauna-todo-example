@@ -1,10 +1,11 @@
-from api import app
-from aiofauna import render_template, markdown_it
+from aiofauna import render_template
 
-@app.get("/")
-async def index():
-    return markdown_it("index.md")
+from api import app
+
 
 @app.get("/todos")
 async def todos():
     return render_template("index.html")
+
+
+app.static()

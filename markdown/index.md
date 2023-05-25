@@ -86,58 +86,122 @@ async def todos():
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind.min.css"
+    />
     <link rel="icon" type="image/svg+xml" href="static/logo.svg" />
     <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/mini.global.js"></script>
     <title>AioFauna Todos</title>
   </head>
   <body>
     <div id="app">
-    <div flex flex-col items-center shadow-lg shadow-black w-96 p-8 m-8 mx-auto>
-      <h1
-      text-4xl font-extrabold text-center text-blue-500 font-sans
-      >+ Task</h1>
-      <form
-      flex flex-col items-center
+      <div
+        flex
+        flex-col
+        items-center
+        shadow-lg
+        shadow-black
+        w-96
+        p-8
+        m-8
+        mx-auto
       >
-        <input type="text" v-model="todo.title"
-        outline m-4 p-1 rounded-lg placeholder="Title"
-        />
-        <textarea v-model="todo.description"
-        outline m-4 p-1 rounded-lg w-64 h-32 
-        placeholder="Description"
-        ></textarea>
-        <button @click="post(todo)"
-        px-4 py-2 bg-blue-500 text-white rounded-lg
-        >Add</button>
-      </form>
-
-    
-    </div>
-    <div v-if="todos.length"
-    m-4 p-4 bg-gray-100 rounded-lg grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4
-    >
-      <div v-for="t in todos"
-      m-4 p-4 flex flex-col items-center bg-white rounded-lg shadow-lg w-64 gap-2
-      >
-      <label font-extrabold>Title:</label>
-        <h2> [[ t.title ]]</h2>
-        <label font-extrabold>Description:</label>
-        <p> [[ t.description ]]</p>
-        <div class="flex items-center mb-4">
-          <input  :id="t.ref" type="checkbox" :value="t.completed" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            @change="put(t.ref)" checked="t.completed"
+        <h1 text-4xl font-extrabold text-center text-blue-500 font-sans>
+          + Task
+        </h1>
+        <form flex flex-col items-center>
+          <input
+            type="text"
+            v-model="todo.title"
+            outline
+            m-4
+            p-1
+            rounded-lg
+            placeholder="Title"
+          />
+          <textarea
+            v-model="todo.description"
+            outline
+            m-4
+            p-1
+            rounded-lg
+            w-64
+            h-32
+            placeholder="Description"
+          ></textarea>
+          <button
+            @click="post(todo)"
+            px-4
+            py-2
+            bg-blue-500
+            text-white
+            rounded-lg
           >
-          <label :for="t.ref" class="ml-2 text-sm font-medium text-gray-400 dark:text-gray-500">[[ t.completed ? 'Done' : 'Pending' ]]</label>
+            Add
+          </button>
+        </form>
       </div>
-        <label>Created:</label>
-        <p> [[ new Date(Math.abs(t.ts)).toLocaleString() ]]</p>
-        <button @click="del(t.ref)"
-        px-4 py-2 bg-red-500 text-white rounded-lg
-        >Delete</button>
+      <div
+        v-if="todos.length"
+        m-4
+        p-4
+        bg-gray-100
+        rounded-lg
+        grid
+        grid-cols-1
+        sm:grid-cols-2
+        md:grid-cols-3
+        lg:grid-cols-4
+        gap-4
+      >
+        <div
+          v-for="t in todos"
+          m-4
+          p-4
+          flex
+          flex-col
+          items-center
+          bg-white
+          rounded-lg
+          shadow-lg
+          w-64
+          gap-2
+        >
+          <label font-extrabold>Title:</label>
+          <h2>[[ t.title ]]</h2>
+          <label font-extrabold>Description:</label>
+          <p>[[ t.description ]]</p>
+          <div class="flex items-center mb-4">
+            <input
+              :id="t.ref"
+              type="checkbox"
+              :value="t.completed"
+              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              @change="put(t.ref)"
+              checked="t.completed"
+            />
+            <label
+              :for="t.ref"
+              class="ml-2 text-sm font-medium text-gray-400 dark:text-gray-500"
+              >[[ t.completed ? 'Done' : 'Pending' ]]</label
+            >
+          </div>
+          <label>Created:</label>
+          <p>[[ new Date(Math.abs(t.ts)).toLocaleString() ]]</p>
+          <button
+            @click="del(t.ref)"
+            px-4
+            py-2
+            bg-red-500
+            text-white
+            rounded-lg
+          >
+            Delete
+          </button>
+        </div>
       </div>
     </div>
-  </div>
     <script type="module" src="static/main.js"></script>
   </body>
 </html>
@@ -148,7 +212,7 @@ async def todos():
 
 import * as Vue from "https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.esm-browser.prod.min.js";
 
-const { ref,createApp, onMounted } = Vue;
+const { ref, createApp, onMounted } = Vue;
 
 const app = createApp({
   delimiters: ["[[", "]]"],
@@ -163,7 +227,7 @@ const app = createApp({
     const get = async () => {
       const res = await fetch("/api/todos");
       const data = await res.json();
-      console.log(data)
+      console.log(data);
       todos.value = data;
     };
     const post = async (todo) => {
@@ -178,7 +242,6 @@ const app = createApp({
       setTimeout(async () => {
         await get();
       }, 1000);
-      
     };
     const put = async (ref_) => {
       const res = await fetch(`/api/todos?ref=${ref_}`, {
@@ -196,8 +259,8 @@ const app = createApp({
         method: "DELETE",
       });
       await res.text();
-      await get();1
-
+      await get();
+      1;
     };
 
     onMounted(async () => {
@@ -217,4 +280,3 @@ const app = createApp({
 
 app.mount("#app");
 ```
-
